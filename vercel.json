@@ -1,0 +1,8 @@
+{
+    "crons": [
+        {
+            "path": "/api/screenMonitor?userId=Yo7xEVBGmZXrShEQdRKV2Va0qlo1",
+            "schedule": "1 * * * *"
+        }
+    ]
+}
