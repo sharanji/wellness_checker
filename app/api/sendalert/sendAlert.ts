@@ -11,7 +11,7 @@ export async function sendAlert(userId: string, deviceToken: string, message: st
         const response = await admin.messaging().send({
             token: deviceToken,
             notification: {
-                title: 'Excess Usage Alert',
+                title: 'Screen Usage Usage Alert',
                 body: message,
             },
             android: {
@@ -24,7 +24,7 @@ export async function sendAlert(userId: string, deviceToken: string, message: st
         console.log('Successfully sent message:', response.toString());
         return { message: 'Notification sent successfully' };
     } catch (error) {
-        console.error('Error sending message:', error);
+        console.error('Error sending message: ', userId);
         return { error: 'Failed to send notification' };
     }
     // } else {
