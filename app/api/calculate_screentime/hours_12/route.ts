@@ -9,7 +9,7 @@ import { calculateScreenOnTime, usersScreenTime } from "../../utils";
 
 export async function GET(req: NextRequest, res: NextResponse) {
 
-    var userScreentime = await usersScreenTime(12);
+    var userScreentime = await usersScreenTime(4);
 
     // send notications to parents:
     userScreentime.forEach(usr => {
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         usr.currentUserParent.forEach(async parent => {
             var parentInfo = await getDoc(doc(db, 'users', parent)).then((doc) => doc.data());
 
-            await sendAlert(parent, parentInfo!['notificationToken'], `${usr.name} not reached a mobile Usage of 6 hours yet!`, "#FFFF00")
+            await sendAlert(parentInfo!['notificationToken'], 'Screen Usage Alert!', `${usr.name} not reached a mobile Usage of 4 hours yet!`, "#FFFF00")
         });
     });
 

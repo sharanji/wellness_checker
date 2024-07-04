@@ -85,11 +85,11 @@ export async function GET(req: NextRequest) {
     const notificationsSubcollectionRef = collection(userDocRef, 'notifications');
 
     if (hoursInuseage >= 6) {
-        await sendAlert(userId, userInfo!['notificationToken'], "Excess Screen Time of 6 Hour", "#FF0000");
+        await sendAlert(userInfo!['notificationToken'], 'Screen Usage Alert!', "Excess Screen Time of 6 Hour", "#FF0000");
         await addDoc(notificationsSubcollectionRef, { message: "Excess Screen Time of 6 Hour", timestamp: serverTimestamp() });
     }
     else if (hoursInuseage >= 0) {
-        await sendAlert(userId, userInfo!['notificationToken'], "Running high,  3 Hour of screen time ,slow down", "#FF0000");
+        await sendAlert(userInfo!['notificationToken'], 'Screen Usage Alert!', "Running high,  3 Hour of screen time ,slow down", "#FF0000");
         await addDoc(notificationsSubcollectionRef, { message: "Running high,  3 Hour of screen time ,slow down", timestamp: serverTimestamp() });
     }
 

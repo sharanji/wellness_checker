@@ -3,15 +3,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import admin from '../firebase-admin';
 import qs from 'qs';
 
-export async function sendAlert(userId: string, deviceToken: string, message: string, colorCode: string) {
-    // if (req.method === 'POST') {
-    // const { token, message } = req.body;
+export async function sendAlert(deviceToken: string, title: string, message: string, colorCode: string) {
 
     try {
         const response = await admin.messaging().send({
             token: deviceToken,
             notification: {
-                title: 'Screen Usage Usage Alert',
+                title: title,
                 body: message,
             },
             android: {
@@ -24,10 +22,8 @@ export async function sendAlert(userId: string, deviceToken: string, message: st
         console.log('Successfully sent message:', response.toString());
         return { message: 'Notification sent successfully' };
     } catch (error) {
-        console.error('Error sending message: ', userId);
+        console.error('Error sending message: ');
         return { error: 'Failed to send notification' };
     }
-    // } else {
-    //     NextResponse.json({ error: 'Failed to send notification' });
-    // }
+
 }

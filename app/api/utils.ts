@@ -67,12 +67,13 @@ export async function usersScreenTime(minScreenTime: number) {
         var parentQuery = query(collection(db, 'trackable_users'), where('members', "array-contains", userId))
         var currentUserParent = await getDocs(parentQuery);
 
-        if (screenTime < (minScreenTime * 60 * 60)) {
+        if (screenTime / 1000 < (minScreenTime * 60 * 60)) {
             userScreentime.push({
                 name: currentUser.name,
                 notifyToken: currentUser.token,
                 userId: userId,
                 screenTime: screenTime,
+                mode: currentUser.mode,
                 currentUserParent: [
                     ...currentUserParent.docs.map((p) => p.id)
                 ]
