@@ -16,7 +16,7 @@ import { app, db } from "@/firebaseconfig";
 import { Timestamp } from "firebase-admin/firestore";
 import firebase from "firebase/compat/app";
 import qs from "qs";
-import { sendAlert } from "../sendalert/sendAlert";
+import { inAppNotify } from "@/app/api/sendalert/inapp_notify";
 
 function calculateScreenOnTime(
   events: Array<{ timestamp: Timestamp; status: string }>
@@ -93,7 +93,7 @@ export async function GET(req: NextRequest) {
   const notificationsSubcollectionRef = collection(userDocRef, "notifications");
 
   if (hoursInuseage >= 6) {
-    await sendAlert(
+    await inAppNotify(
       userInfo!["notificationToken"],
       "Screen Usage Alert!",
       "Excess Screen Time of 6 Hour",
@@ -104,7 +104,7 @@ export async function GET(req: NextRequest) {
       timestamp: serverTimestamp(),
     });
   } else if (hoursInuseage >= 0) {
-    await sendAlert(
+    await inAppNotify(
       userInfo!["notificationToken"],
       "Screen Usage Alert!",
       "Running high,  3 Hour of screen time ,slow down",
