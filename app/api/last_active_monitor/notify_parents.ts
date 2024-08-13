@@ -36,7 +36,7 @@ export async function notifyParent(user: any, inActiveDuration: string) {
 
     try {
       await whatsappNotify(
-        parentInfo!["whatsapp_number"],
+        parentInfo!["country_code"] + parentInfo!["whatsapp_number"],
         user.name,
         parentInfo!["name"],
         inActiveDuration

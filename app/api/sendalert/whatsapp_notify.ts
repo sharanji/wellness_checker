@@ -9,8 +9,7 @@ export async function whatsappNotify(
 ) {
   const url = "https://graph.facebook.com/v17.0/116480298220877/messages";
   const token =
-    "EAAGMpaYCvZCoBO0O3mIAbVvtsVnJdOlmJanVmmwyZBN3gLe6SbHorBF7RVnIPju0qtK0oLI0vNWmLBXv2X0ZAMG0ZABPPPyMCBYcMTLAsDUkhM71H5ymh2TMNMGOJICrY6VD7VdYLokWhdpljggvaiG9jMATdgG4ZAbHcAjW6xvbzOyXhl1FHUB1kjFqzljVhZCpoK7nwNTEUBr8NmYmAZD";
-  waId = "+91" + waId;
+    "EAAGMpaYCvZCoBO511WVp66P4JTk8gQ9Hk5tlFnwnSJfQGDoXiF3zhyY8zJxRzMFQ0FtRzkyZCAd9minuVwuDKVSdqIM6gaZCkjsMVxTxmNH8efvjU5DR5R9w3xs2Eyn54JZCZByqjsTK1xZCAED9aHLnG8l2XvgyPFhRpxZBdH4kULmZCMuQLCEECT4cXOi2NfGFu5lXuomYOCZAdvsXqkA8ZD";
 
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -27,7 +26,7 @@ export async function whatsappNotify(
       body:
         "Hello " +
         parentName +
-        " ```" +
+        " ,  ```" +
         userName +
         "``` is Inactive for _" +
         duration +
