@@ -5,30 +5,32 @@ import {
   getDocs,
   where,
   serverTimestamp,
+  Timestamp,
   updateDoc,
   doc,
 } from "firebase/firestore";
 import { db } from "@/firebaseconfig";
-import { Timestamp } from "firebase-admin/firestore";
 import { notifyParent } from "./notify_parents";
 
 export async function GET(req: NextRequest) {
   const timeNow = Date.now();
-  const threeHoursAgo = new Date(timeNow - 3 * 3600 * 1000);
+  const threeHoursAgo = new Date();
+  threeHoursAgo.setHours(threeHoursAgo.getHours() - 3);
 
   const allUsersQuery = query(
     collection(db, "users"),
-    where("last_active", "<", threeHoursAgo),
-    where("last_notifed", ">", threeHoursAgo)
+    where("last_active", "<", Timestamp.fromDate(threeHoursAgo))
   );
 
   const allUsers = await getDocs(allUsersQuery).then((users) => [
     ...users.docs.map((u) => {
+      var userData = u.data();
       return {
         id: u.id,
-        mode: u.data()["mode_name"],
-        name: u.data()["name"],
-        lastActive: u.data()["last_active"],
+        mode: userData["mode_name"],
+        name: userData["name"],
+        lastActive: userData["last_active"],
+        lastNotified: userData["last_notifed"],
       };
     }),
   ]);
@@ -37,10 +39,11 @@ export async function GET(req: NextRequest) {
     var currentUser = allUsers[userIndex];
 
     const user = currentUser;
-    var userId = user.id; //"NAOd8lfxMxanusqpBunEj3SjU922";
+    var userId = user.id;
     if (
+      user.lastNotified.toDate().getTime() < threeHoursAgo.getTime() &&
       user.mode == "Daily Routine" &&
-      user.lastActive.toDate().getTime() < timeNow - 3 * 3600 * 1000
+      user.lastActive.toDate().getTime() < threeHoursAgo.getTime()
     ) {
       var inActiveDuration = formatDuration(user.lastActive, timeNow);
       await updateDoc(doc(db, "users", userId), {
