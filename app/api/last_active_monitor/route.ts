@@ -29,11 +29,13 @@ export async function GET(req: NextRequest) {
         id: u.id,
         mode: userData["mode_name"],
         name: userData["name"],
-        lastActive: userData["last_active"],
-        lastNotified: userData["last_notifed"],
+        lastActive: userData["last_active"] as Timestamp,
+        lastNotified: userData["last_notifed"] as Timestamp,
       };
     }),
   ]);
+
+  var notifiedUsers: Array<string> = [];
 
   for (let userIndex = 0; userIndex < allUsers.length; userIndex++) {
     var currentUser = allUsers[userIndex];
@@ -41,10 +43,11 @@ export async function GET(req: NextRequest) {
     const user = currentUser;
     var userId = user.id;
     if (
-      user.lastNotified.toDate().getTime() < threeHoursAgo.getTime() &&
-      user.mode == "Daily Routine" &&
-      user.lastActive.toDate().getTime() < threeHoursAgo.getTime()
+      user.lastNotified == undefined ||
+      (user.lastNotified.toDate().getTime() < threeHoursAgo.getTime() &&
+        user.lastActive.toDate().getTime() < threeHoursAgo.getTime())
     ) {
+      notifiedUsers.push(user.name);
       var inActiveDuration = formatDuration(user.lastActive, timeNow);
       await updateDoc(doc(db, "users", userId), {
         last_notifed: serverTimestamp(),
@@ -54,7 +57,7 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ message: "perfect" });
+  return NextResponse.json({ message: "perfect", notifiedUsers });
 }
 
 function formatDuration(a: Timestamp, b: number): string {
