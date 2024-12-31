@@ -28,7 +28,7 @@ export async function whatsappNotify(
         userName +
         "``` is Inactive for _" +
         duration +
-        "_.\nClick the link below to See detailed analytics.\nhttp://sharanji.vercelapp.com/imok?123",
+        "_.\nClick the link below to See detailed analytics.\nhttps://wellness-checker.vercel.app/",
     },
   };
 
